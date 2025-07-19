@@ -1,13 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  description: MyText
-  latitude: 1.5
-  longitude: 1.5
-
-two:
-  name: MyString
-  description: MyText
-  latitude: 1.5
-  longitude: 1.5
+default:
+  name: Test
+  description: Default
+  latitude: 0.0
+  longitude: 0.0
