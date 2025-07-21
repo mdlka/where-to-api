@@ -2,7 +2,11 @@ class Api::PlacesController < ApplicationController
   before_action set_place, only: [ :show, :update, :destroy ]
 
   def index
-    render json: Place.all
+    if search_params_present?
+      render json: Place.in_radius(params[:long].to_f, params[:lat].to_f, params[:radius].to_f)
+    else
+      render json: Place.all
+    end
   end
 
   def show
@@ -34,8 +38,18 @@ class Api::PlacesController < ApplicationController
 
   private
 
+  def search_params_present?
+    params[:long].present? && params[:lat].present? && params[:radius].present?
+  end
+
   def place_params
-    params.expect(place: [:name, :description, :latitude, :longitude])
+    raw_params = params.expect(place: [:name, :description, :latitude, :longitude])
+
+    if raw_params[:latitude] && raw_params[:longitude]
+      raw_params[:location] = Geo.point(raw_params.delete(:longitude).to_f, raw_params.delete(:latitude).to_f)
+    end
+
+    raw_params
   end
 
   def set_place
