@@ -3,5 +3,4 @@
 default:
   name: Test
   description: Default
-  latitude: 0.0
-  longitude: 0.0
+  location: POINT(37.6173 55.7558)
