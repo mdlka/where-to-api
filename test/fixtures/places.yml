@@ -4,3 +4,13 @@ default:
   name: Test
   description: Default
   location: POINT(37.6173 55.7558)
+
+moscow:
+  name: Moscow
+  description: Moscow
+  location: Point(37.64599 55.6656)
+
+spb:
+  name: SPB
+  description: SPB
+  location: Point(30.3500 59.9339)
