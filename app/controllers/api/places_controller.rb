@@ -1,5 +1,5 @@
 class Api::PlacesController < ApplicationController
-  before_action set_place, only: [ :show, :update, :destroy ]
+  before_action :set_place, only: [ :show, :update, :destroy ]
 
   def index
     if search_params_present?
