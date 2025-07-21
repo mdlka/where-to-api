@@ -1,4 +1,4 @@
-class Utils::Geo
+class Geo
   SRID = 4326
 
   def self.factory

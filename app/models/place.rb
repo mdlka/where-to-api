@@ -3,8 +3,8 @@ class Place < ApplicationRecord
 
   scope :in_radius, ->(long, lat, radius_meters) {
     where(
-      "ST_DWithin(location, ST_SetSRID(ST_MakePoint(?, ?), ?)::geography, ?)",
-      long, lat, Utils::Geo::SRID, radius_meters
+      "ST_DWithin(location, :point, :radius)",
+      point: Geo.to_wkt(Geo.point(long, lat)), radius: radius_meters
     )
   }
 end
