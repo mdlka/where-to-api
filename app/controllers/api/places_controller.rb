@@ -43,7 +43,7 @@ class Api::PlacesController < ApplicationController
   end
 
   def place_params
-    raw_params = params.expect(place: [:name, :description, :latitude, :longitude])
+    raw_params = params.expect(place: [ :name, :description, :latitude, :longitude ])
 
     if raw_params[:latitude] && raw_params[:longitude]
       raw_params[:location] = Geo.point(raw_params.delete(:longitude).to_f, raw_params.delete(:latitude).to_f)
