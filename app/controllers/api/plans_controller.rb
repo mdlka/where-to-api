@@ -2,11 +2,11 @@ class Api::PlansController < ApplicationController
   before_action :set_plan, only: [ :show, :update, :destroy ]
 
   def index
-    render json: Plan.all, include: :places
+    render json: Plan.all, include: :places, status: :ok
   end
 
   def show
-    render json: @plan, include: :places
+    render json: @plan, include: :places, status: :ok
   end
 
   def create
@@ -21,7 +21,7 @@ class Api::PlansController < ApplicationController
 
   def update
     if @plan.update(plan_params)
-      render json: @plan
+      render json: @plan, status: :ok
     else
       render json: { errors: @plan.errors.full_messages }, status: :bad_request
     end
