@@ -7,5 +7,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :places, only: [ :index, :show, :create, :update, :destroy ]
+    resources :plans, only: [ :index, :show, :create, :update, :destroy ]
   end
 end
