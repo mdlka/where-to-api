@@ -2,7 +2,7 @@ class Api::PlansController < ApplicationController
   before_action :set_plan, only: [ :show, :update, :destroy ]
 
   def index
-    render json: Plan.all, include: :places, status: :ok
+    render json: Plan.all.includes(:places), include: :places, status: :ok
   end
 
   def show
