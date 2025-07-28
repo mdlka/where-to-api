@@ -10,8 +10,8 @@ class Api::ApiKeysController < ApplicationController
       user = User.find_by(email: email)
 
       if user&.authenticate(password)
-        api_key = user.api_keys.create!(token_digest: SecureRandom.hex)
-        render json: api_key, status: :created and return
+        api_key = user.api_keys.create!(token: SecureRandom.hex)
+        render json: { token: api_key.token }, status: :created and return
       end
     end
 
