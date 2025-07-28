@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
+    resources :api_keys, path: "api-keys", only: [ :index, :create, :destroy ]
+
     resources :places, only: [ :index, :show, :create, :update, :destroy ]
     resources :plans, only: [ :index, :show, :create, :update, :destroy ] do
       resources :places, only: [ :index, :show, :create, :destroy ], controller: :plan_places
