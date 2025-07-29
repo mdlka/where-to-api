@@ -1,3 +1,3 @@
 class ApplicationController < ActionController::API
-  include ApiKeyAuthenticatable
+  include ApiKeyAuthentication
 end

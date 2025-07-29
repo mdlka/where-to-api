@@ -1,4 +1,4 @@
-module ApiKeyAuthenticatable
+module ApiKeyAuthentication
   extend ActiveSupport::Concern
 
   include ActionController::HttpAuthentication::Basic::ControllerMethods

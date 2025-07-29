@@ -6,7 +6,13 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
-    resources :api_keys, path: "api-keys", only: [ :index, :create, :destroy ]
+    scope module: :auth do
+      post "signup", to: "auth#signup"
+      post "login", to: "auth#login"
+      delete "logout", to: "auth#logout"
+
+      resources :api_keys, path: "tokens", only: [ :index ]
+    end
 
     resources :places, only: [ :index, :show, :create, :update, :destroy ]
     resources :plans, only: [ :index, :show, :create, :update, :destroy ] do
