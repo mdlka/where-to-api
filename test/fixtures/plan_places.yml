@@ -2,4 +2,4 @@
 
 default:
   plan: :default
-  place: :default
+  location: POINT(37.6173 55.7558)

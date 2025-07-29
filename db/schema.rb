@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_26_210922) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_29_022857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "postgis"
@@ -34,10 +34,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_26_210922) do
 
   create_table "plan_places", force: :cascade do |t|
     t.bigint "plan_id", null: false
-    t.bigint "place_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["place_id"], name: "index_plan_places_on_place_id"
+    t.geography "location", limit: {srid: 4326, type: "st_point", geographic: true}, null: false
     t.index ["plan_id"], name: "index_plan_places_on_plan_id"
   end
 
@@ -57,6 +56,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_26_210922) do
   end
 
   add_foreign_key "api_keys", "users"
-  add_foreign_key "plan_places", "places"
   add_foreign_key "plan_places", "plans"
 end
