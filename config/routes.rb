@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
-    scope module: :auth do
+    namespace :auth do
       post "signup", to: "auth#signup"
       post "login", to: "auth#login"
       delete "logout", to: "auth#logout"
