@@ -12,9 +12,7 @@ class Api::Auth::AuthController < ApplicationController
   end
 
   def login
-    user = User.find_by(email: params[:email])
-
-    if user.authenticate(params[:password])
+    if (user = User.authenticate_by(user_params))
       api_key = user.api_keys.create!(token: SecureRandom.hex)
       response.headers["Authorization"] = "Bearer #{api_key.token}"
       render json: user, status: :ok
