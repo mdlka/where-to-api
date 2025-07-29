@@ -19,7 +19,7 @@ class Api::PlacesController < ApplicationController
     if place.save
       render json: place, status: :created, location: api_place_url(place)
     else
-      render json: { errors: place.errors.full_messages }, status: :bad_request
+      render json: { errors: place.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -27,7 +27,7 @@ class Api::PlacesController < ApplicationController
     if @place.update(place_params)
       render json: @place, status: :ok
     else
-      render json: { errors: @place.errors.full_messages }, status: :bad_request
+      render json: { errors: @place.errors.full_messages }, status: :unprocessable_content
     end
   end
 

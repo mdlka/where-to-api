@@ -2,6 +2,6 @@ class Api::Auth::ApiKeysController < ApplicationController
   before_action :authenticate_with_api_key!
 
   def index
-    render json: current_user.api_keys
+    render json: current_user.api_keys, status: :ok
   end
 end

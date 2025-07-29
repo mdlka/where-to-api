@@ -15,7 +15,7 @@ class Api::PlanPlacesController < ApplicationController
     if plan_place.save
       render json: plan_place, status: :created, location: api_plan_place_url(@plan.id, plan_place.place_id)
     else
-      render json: { errors: plan_place.errors.full_messages }, status: :bad_request
+      render json: { errors: plan_place.errors.full_messages }, status: :unprocessable_content
     end
   end
 
