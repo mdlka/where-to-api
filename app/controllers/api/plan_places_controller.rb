@@ -1,4 +1,6 @@
 class Api::PlanPlacesController < ApplicationController
+  include GeoPointConversion
+
   before_action :set_plan
 
   def index
@@ -28,12 +30,7 @@ class Api::PlanPlacesController < ApplicationController
 
   def place_params
     raw_params = params.expect(place: [ :latitude, :longitude ])
-
-    if raw_params[:latitude] && raw_params[:longitude]
-      raw_params[:location] = Geo.point(raw_params.delete(:longitude).to_f, raw_params.delete(:latitude).to_f)
-    end
-
-    raw_params
+    convert_coordinates_to_point(raw_params, point_key: :location)
   end
 
   def set_plan
