@@ -5,14 +5,14 @@ class Api::PlacesController < ApplicationController
 
   def index
     if search_params_present?
-      render json: Place.in_radius(params[:long].to_f, params[:lat].to_f, params[:radius].to_f), status: :ok
+      render json: Place.in_radius(params[:long].to_f, params[:lat].to_f, params[:radius].to_f)
     else
-      render json: Place.all, status: :ok
+      render json: Place.all
     end
   end
 
   def show
-    render json: @place, status: :ok
+    render json: @place
   end
 
   def create
@@ -27,15 +27,14 @@ class Api::PlacesController < ApplicationController
 
   def update
     if @place.update(place_params)
-      render json: @place, status: :ok
+      render json: @place
     else
       render json: { errors: @place.errors.full_messages }, status: :unprocessable_content
     end
   end
 
   def destroy
-    @place.destroy
-    head :no_content
+    @place.destroy!
   end
 
   private

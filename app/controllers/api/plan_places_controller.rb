@@ -2,13 +2,14 @@ class Api::PlanPlacesController < ApplicationController
   include GeoPointConversion
 
   before_action :set_plan
+  before_action :set_plan_place, only: [ :show, :destroy ]
 
   def index
-    render json: @plan.plan_places, status: :ok
+    render json: @plan.plan_places
   end
 
   def show
-    render json: @plan.plan_places.find(params[:id]), status: :ok
+    render json: @plan_place
   end
 
   def create
@@ -22,8 +23,7 @@ class Api::PlanPlacesController < ApplicationController
   end
 
   def destroy
-    @plan.plan_places.find(params[:id]).destroy
-    head :no_content
+    @plan_place.destroy!
   end
 
   private
@@ -35,5 +35,9 @@ class Api::PlanPlacesController < ApplicationController
 
   def set_plan
     @plan = Plan.find(params[:plan_id])
+  end
+
+  def set_plan_place
+    @plan_place = @plan.plan_places.find(params[:id])
   end
 end

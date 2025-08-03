@@ -3,11 +3,11 @@ class Api::PlanMembersController < ApplicationController
   before_action :set_plan_member, only: [ :show, :update, :destroy]
 
   def index
-    render json: @plan.plan_members, status: :ok
+    render json: @plan.plan_members
   end
 
   def show
-    render json: @plan_member, status: :ok
+    render json: @plan_member
   end
 
   def create
@@ -22,15 +22,14 @@ class Api::PlanMembersController < ApplicationController
 
   def update
     if @plan_member.update(params.expect(member: [ :role ]))
-      render json: @plan_member, status: :ok
+      render json: @plan_member
     else
       render json: { errors: @plan_member.errors.full_messages }, status: :unprocessable_content
     end
   end
 
   def destroy
-    @plan_member.destroy
-    head :no_content
+    @plan_member.destroy!
   end
 
   private
