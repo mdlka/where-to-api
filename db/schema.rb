@@ -10,10 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_29_022857) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_03_211847) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "postgis"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "plan_member_role", ["member", "admin"]
 
   create_table "api_keys", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -30,6 +34,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_29_022857) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.geography "location", limit: {srid: 4326, type: "st_point", geographic: true}, null: false
+  end
+
+  create_table "plan_members", force: :cascade do |t|
+    t.bigint "plan_id", null: false
+    t.bigint "user_id", null: false
+    t.enum "role", default: "member", null: false, enum_type: "plan_member_role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_id"], name: "index_plan_members_on_plan_id"
+    t.index ["user_id"], name: "index_plan_members_on_user_id"
   end
 
   create_table "plan_places", force: :cascade do |t|
@@ -56,5 +70,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_29_022857) do
   end
 
   add_foreign_key "api_keys", "users"
+  add_foreign_key "plan_members", "plans"
+  add_foreign_key "plan_members", "users"
   add_foreign_key "plan_places", "plans"
 end
