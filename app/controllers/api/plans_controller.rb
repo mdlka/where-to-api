@@ -1,4 +1,5 @@
 class Api::PlansController < ApplicationController
+  before_action :authenticate_with_api_key!
   before_action :set_plan, only: [ :show, :update, :destroy ]
 
   def index
@@ -12,11 +13,16 @@ class Api::PlansController < ApplicationController
   def create
     plan = Plan.new(plan_params)
 
-    if plan.save
-      render json: plan, status: :created, location: api_plan_url(plan)
-    else
-      render json: { errors: plan.errors.full_messages }, status: :unprocessable_content
+    Plan.transaction do
+      plan.save!
+      plan.plan_members.create!(user_id: current_user.id, role: :admin)
     end
+
+    render json: plan, status: :created, location: api_plan_url(plan)
+
+  rescue ActiveRecord::RecordInvalid
+    errors = plan&.errors&.full_messages || [ "Failed to create plan" ]
+    render json: { errors: errors }, status: :unprocessable_content
   end
 
   def update
