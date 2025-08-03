@@ -4,7 +4,10 @@ module ApiKeyAuthentication
   include ActionController::HttpAuthentication::Basic::ControllerMethods
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
+  # @return [ApiKey, nil]
   attr_reader :current_api_key
+
+  # @return [User, nil]
   attr_reader :current_user
 
   def authenticate_with_api_key!
