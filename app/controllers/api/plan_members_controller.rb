@@ -1,6 +1,6 @@
 class Api::PlanMembersController < ApplicationController
   before_action :set_plan
-  before_action :set_plan_member, only: [ :show, :update, :destroy]
+  before_action :set_plan_member, only: [ :show, :update, :destroy ]
 
   def index
     render json: @plan.plan_members
