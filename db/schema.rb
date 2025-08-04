@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_03_211847) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_04_160814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "postgis"
@@ -42,6 +42,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_03_211847) do
     t.enum "role", default: "member", null: false, enum_type: "plan_member_role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["plan_id", "user_id"], name: "index_plan_members_on_plan_id_and_user_id", unique: true
     t.index ["plan_id"], name: "index_plan_members_on_plan_id"
     t.index ["user_id"], name: "index_plan_members_on_user_id"
   end
