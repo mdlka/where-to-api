@@ -1,4 +1,4 @@
-class Api::PlanPlacesController < ApplicationController
+class Api::Plans::PlacesController < ApplicationController
   include GeoPointConversion
 
   before_action :set_plan

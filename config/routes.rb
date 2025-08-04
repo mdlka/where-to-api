@@ -16,8 +16,10 @@ Rails.application.routes.draw do
 
     resources :places, only: [ :index, :show, :create, :update, :destroy ]
     resources :plans, only: [ :index, :show, :create, :update, :destroy ] do
-      resources :places, only: [ :index, :show, :create, :destroy ], controller: :plan_places
-      resources :members, only: [ :index, :show, :create, :update, :destroy ], controller: :plan_members
+      scope module: :plans do
+        resources :places, only: [ :index, :show, :create, :destroy ]
+        resources :members, only: [ :index, :show, :create, :update, :destroy ]
+      end
     end
   end
 end

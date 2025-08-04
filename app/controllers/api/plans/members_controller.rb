@@ -1,4 +1,4 @@
-class Api::PlanMembersController < ApplicationController
+class Api::Plans::MembersController < ApplicationController
   before_action :set_plan
   before_action :set_plan_member, only: [ :show, :update, :destroy ]
 
