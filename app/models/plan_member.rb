@@ -5,5 +5,7 @@ class PlanMember < ApplicationRecord
   enum :role, {
     member: "member",
     admin: "admin"
-  }
+  }, validate: true
+
+  validates :user_id, uniqueness: { scope: :plan_id, message: "is already a member of this plan" }
 end
