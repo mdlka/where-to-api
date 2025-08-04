@@ -3,7 +3,7 @@ class Api::PlansController < ApplicationController
   before_action :set_plan, only: [ :show, :update, :destroy ]
 
   def index
-    render json: Plan.all.includes(:plan_places), include: :plan_places
+    render json: current_user.plans.includes(:plan_places), include: :plan_places
   end
 
   def show
@@ -44,6 +44,6 @@ class Api::PlansController < ApplicationController
   end
 
   def set_plan
-    @plan = Plan.find(params[:id])
+    @plan = current_user.plans.find(params[:id])
   end
 end

@@ -1,6 +1,7 @@
 class Api::Plans::PlacesController < ApplicationController
   include GeoPointConversion
 
+  before_action :authenticate_with_api_key!
   before_action :set_plan
   before_action :set_plan_place, only: [ :show, :destroy ]
 
@@ -34,7 +35,7 @@ class Api::Plans::PlacesController < ApplicationController
   end
 
   def set_plan
-    @plan = Plan.find(params[:plan_id])
+    @plan = current_user.plans.find(params[:plan_id])
   end
 
   def set_plan_place
