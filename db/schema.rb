@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_04_160814) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_04_174746) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "postgis"
@@ -71,7 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_04_160814) do
   end
 
   add_foreign_key "api_keys", "users"
-  add_foreign_key "plan_members", "plans"
+  add_foreign_key "plan_members", "plans", on_delete: :cascade
   add_foreign_key "plan_members", "users"
-  add_foreign_key "plan_places", "plans"
+  add_foreign_key "plan_places", "plans", on_delete: :cascade
 end
