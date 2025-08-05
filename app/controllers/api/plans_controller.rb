@@ -1,6 +1,7 @@
 class Api::PlansController < ApplicationController
   before_action :authenticate_with_api_key!
   before_action :set_plan, only: [ :show, :update, :destroy ]
+  before_action :validate_destroy_access!, only: [ :destroy ]
 
   def index
     render json: current_user.plans.includes(:plan_places), include: :plan_places
@@ -39,11 +40,15 @@ class Api::PlansController < ApplicationController
 
   private
 
-  def plan_params
-    params.expect(plan: [ :title, :is_active ])
-  end
-
   def set_plan
     @plan = current_user.plans.find(params[:id])
+  end
+
+  def validate_destroy_access!
+    head :forbidden unless @plan.admin?(current_user)
+  end
+
+  def plan_params
+    params.expect(plan: [ :title, :is_active ])
   end
 end

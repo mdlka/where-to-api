@@ -2,6 +2,7 @@ class Api::Plans::MembersController < ApplicationController
   before_action :authenticate_with_api_key!
   before_action :set_plan
   before_action :set_plan_member, only: [ :show, :update, :destroy ]
+  before_action :validate_edit_access!, only: [ :create, :update, :destroy ]
 
   def index
     render json: @plan.plan_members
@@ -41,6 +42,10 @@ class Api::Plans::MembersController < ApplicationController
 
   def set_plan_member
     @plan_member = @plan.plan_members.find(params[:id])
+  end
+
+  def validate_edit_access!
+    head :forbidden unless @plan.admin?(current_user)
   end
 
   def member_params

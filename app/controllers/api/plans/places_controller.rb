@@ -4,6 +4,7 @@ class Api::Plans::PlacesController < ApplicationController
   before_action :authenticate_with_api_key!
   before_action :set_plan
   before_action :set_plan_place, only: [ :show, :destroy ]
+  before_action :validate_destroy_access!, only: [ :destroy ]
 
   def index
     render json: @plan.plan_places
@@ -29,16 +30,20 @@ class Api::Plans::PlacesController < ApplicationController
 
   private
 
-  def place_params
-    raw_params = params.expect(place: [ :latitude, :longitude ])
-    convert_coordinates_to_point(raw_params, point_key: :location)
-  end
-
   def set_plan
     @plan = current_user.plans.find(params[:plan_id])
   end
 
   def set_plan_place
     @plan_place = @plan.plan_places.find(params[:id])
+  end
+
+  def validate_destroy_access!
+    head :forbidden unless @plan.admin?(current_user) || @plan_place.owner?(current_user)
+  end
+
+  def place_params
+    raw_params = params.expect(place: [ :latitude, :longitude ])
+    convert_coordinates_to_point(raw_params, point_key: :location)
   end
 end
