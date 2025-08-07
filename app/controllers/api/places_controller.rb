@@ -5,21 +5,22 @@ class Api::PlacesController < ApplicationController
 
   def index
     if search_params_present?
-      render json: Place.in_radius(params[:long].to_f, params[:lat].to_f, params[:radius].to_f)
+      places_in_radius = Place.in_radius(params[:long].to_f, params[:lat].to_f, params[:radius].to_f)
+      render json: PlaceBlueprint.render(places_in_radius)
     else
-      render json: Place.all
+      render json: PlaceBlueprint.render(Place.all)
     end
   end
 
   def show
-    render json: @place
+    render json: PlaceBlueprint.render(@place)
   end
 
   def create
     place = Place.new(place_params)
 
     if place.save
-      render json: place, status: :created, location: api_place_url(place)
+      render json: PlaceBlueprint.render(place), status: :created, location: api_place_url(place)
     else
       render json: { errors: place.errors.full_messages }, status: :unprocessable_content
     end
@@ -27,7 +28,7 @@ class Api::PlacesController < ApplicationController
 
   def update
     if @place.update(place_params)
-      render json: @place
+      render json: PlaceBlueprint.render(@place)
     else
       render json: { errors: @place.errors.full_messages }, status: :unprocessable_content
     end

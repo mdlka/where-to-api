@@ -5,18 +5,19 @@ class Api::Plans::MembersController < ApplicationController
   before_action :validate_edit_access!, only: [ :create, :update, :destroy ]
 
   def index
-    render json: @plan.plan_members
+    render json: PlanMemberBlueprint.render(@plan.plan_members)
   end
 
   def show
-    render json: @plan_member
+    render json: PlanMemberBlueprint.render(@plan_member)
   end
 
   def create
     plan_member = PlanMember.new(member_params.merge(plan_id: @plan.id))
 
     if plan_member.save
-      render json: plan_member, status: :created, location: api_plan_member_url(@plan.id, plan_member.id)
+      render json: PlanMemberBlueprint.render(plan_member), status: :created,
+             location: api_plan_member_url(@plan.id, plan_member.id)
     else
       render json: { errors: plan_member.errors.full_messages }, status: :unprocessable_content
     end
@@ -24,7 +25,7 @@ class Api::Plans::MembersController < ApplicationController
 
   def update
     if @plan_member.update(params.expect(member: [ :role ]))
-      render json: @plan_member
+      render json: PlanMemberBlueprint.render(@plan_member)
     else
       render json: { errors: @plan_member.errors.full_messages }, status: :unprocessable_content
     end

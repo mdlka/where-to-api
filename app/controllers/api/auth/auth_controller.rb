@@ -5,7 +5,7 @@ class Api::Auth::AuthController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      render json: user, status: :created
+      render json: UserBlueprint.render(user), status: :created
     else
       render json: { errors: user.errors.full_messages }, status: :unprocessable_content
     end
@@ -15,7 +15,7 @@ class Api::Auth::AuthController < ApplicationController
     if (user = User.authenticate_by(user_params))
       api_key = user.api_keys.create!(token: SecureRandom.hex)
       response.headers["Authorization"] = "Bearer #{api_key.token}"
-      render json: user, status: :ok
+      render json: UserBlueprint.render(user), status: :ok
     else
       render json: { error: "Invalid email or password" }, status: :unauthorized
     end

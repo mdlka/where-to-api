@@ -4,11 +4,11 @@ class Api::PlansController < ApplicationController
   before_action :validate_destroy_access!, only: [ :destroy ]
 
   def index
-    render json: current_user.plans.includes(:plan_places), include: :plan_places
+    render json: PlanBlueprint.render(current_user.plans.includes(:plan_places))
   end
 
   def show
-    render json: @plan, include: :plan_places
+    render json: PlanBlueprint.render(@plan)
   end
 
   def create
@@ -19,7 +19,7 @@ class Api::PlansController < ApplicationController
       plan.plan_members.create!(user_id: current_user.id, role: :admin)
     end
 
-    render json: plan, status: :created, location: api_plan_url(plan)
+    render json: PlanBlueprint.render(plan), status: :created, location: api_plan_url(plan)
 
   rescue ActiveRecord::RecordInvalid
     errors = plan&.errors&.full_messages || [ "Failed to create plan" ]
@@ -28,7 +28,7 @@ class Api::PlansController < ApplicationController
 
   def update
     if @plan.update(plan_params)
-      render json: @plan
+      render json: PlanBlueprint.render(@plan)
     else
       render json: { errors: @plan.errors.full_messages }, status: :unprocessable_content
     end

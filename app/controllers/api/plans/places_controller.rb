@@ -7,18 +7,19 @@ class Api::Plans::PlacesController < ApplicationController
   before_action :validate_destroy_access!, only: [ :destroy ]
 
   def index
-    render json: @plan.plan_places
+    render json: PlanPlaceBlueprint.render(@plan.plan_places)
   end
 
   def show
-    render json: @plan_place
+    render json: PlanPlaceBlueprint.render(@plan_place)
   end
 
   def create
-    plan_place = PlanPlace.new(place_params.merge(plan_id: @plan.id))
+    plan_place = PlanPlace.new(place_params.merge(plan_id: @plan.id, user_id: current_user.id))
 
     if plan_place.save
-      render json: plan_place, status: :created, location: api_plan_place_url(@plan.id, plan_place.id)
+      render json: PlanPlaceBlueprint.render(plan_place), status: :created,
+             location: api_plan_place_url(@plan.id, plan_place.id)
     else
       render json: { errors: plan_place.errors.full_messages }, status: :unprocessable_content
     end
@@ -43,7 +44,7 @@ class Api::Plans::PlacesController < ApplicationController
   end
 
   def place_params
-    raw_params = params.expect(place: [ :latitude, :longitude ])
+    raw_params = params.expect(place: [ :name, :latitude, :longitude ])
     convert_coordinates_to_point(raw_params, point_key: :location)
   end
 end
