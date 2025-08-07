@@ -1,13 +1,9 @@
 class PlaceBlueprint < Blueprinter::Base
+  extend LocationFields
+
   identifier :id
 
   fields :name, :description
 
-  field :longitude do |place, options|
-    "#{place.location.x}"
-  end
-
-  field :latitude do |place, options|
-    "#{place.location.y}"
-  end
+  add_location_fields(location_method: :location)
 end
