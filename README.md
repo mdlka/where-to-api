@@ -8,6 +8,7 @@ API для совместного планирования прогулок на
 * PostgreSQL + PostGIS
 * RGeo + ActiveRecord PostGIS Adapter для работы с геоданными
 * Minitest для тестирования
+* Blueprinter для сериализации JSON
 
 ## Основные возможности
 
